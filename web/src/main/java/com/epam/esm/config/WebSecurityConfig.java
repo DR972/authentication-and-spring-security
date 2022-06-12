@@ -70,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests()
                 .antMatchers(GET, "/certificates/**", "/tags/**").permitAll()
                 .antMatchers(POST, "/registration", "/authorization").permitAll()
-                .antMatchers(POST, "/customers/{customerId}/orders").fullyAuthenticated()
+                .antMatchers(POST, "/orders").fullyAuthenticated()
                 .anyRequest().hasRole(ADMIN)
                 .and()
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandlerEntryPoint).authenticationEntryPoint(authenticationHandlerEntryPoint)

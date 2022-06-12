@@ -4,12 +4,14 @@ import com.epam.esm.dao.CustomerDao;
 import com.epam.esm.entity.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.Optional;
 
 /**
@@ -22,6 +24,7 @@ import java.util.Optional;
 @Service
 @Transactional
 public class CustomerDetailsServiceImpl implements UserDetailsService {
+    private static final String ROLE_PREFIX = "ROLE_";
     /**
      * CustomerDao customerDao.
      */
@@ -47,6 +50,7 @@ public class CustomerDetailsServiceImpl implements UserDetailsService {
                 .username(user.get().getEmail())
                 .password(user.get().getPassword())
                 .roles(user.get().getRole().name())
+                .authorities(Collections.singletonList(new SimpleGrantedAuthority(ROLE_PREFIX + user.get().getRole().toString())))
                 .build();
     }
 }

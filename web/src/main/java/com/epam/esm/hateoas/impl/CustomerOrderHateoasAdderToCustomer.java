@@ -4,7 +4,6 @@ import com.epam.esm.controller.CertificateController;
 import com.epam.esm.controller.CustomerController;
 import com.epam.esm.controller.CustomerOrderController;
 import com.epam.esm.controller.TagController;
-import com.epam.esm.dto.CustomerDto;
 import com.epam.esm.dto.CustomerOrderDto;
 import com.epam.esm.dto.ResourceDto;
 import com.epam.esm.hateoas.HateoasAdder;
@@ -34,7 +33,7 @@ public class CustomerOrderHateoasAdderToCustomer implements HateoasAdder<Custome
         customerOrderDto.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerById(String.valueOf(customerOrderDto.getCustomerId()))).withRel("getCustomerById"));
         customerOrderDto.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerList("5", "1")).withRel("getCustomerList"));
         customerOrderDto.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerOrderList(String.valueOf(customerOrderDto.getCustomerId()), "5", "1")).withRel("getCustomerOrderList"));
-        customerOrderDto.add(linkTo(methodOn(CUSTOMER_CONTROLLER).createCustomerOrder(String.valueOf(customerOrderDto.getCustomerId()), new CustomerOrderDto())).withRel("createCustomerOrder"));
+
         customerOrderDto.getGiftCertificates().forEach(c -> {
             c.add(linkTo(methodOn(CERTIFICATE_CONTROLLER).getCertificateById(String.valueOf(c.getCertificateId()))).withRel("getCertificateById"));
             c.getTags().forEach(t -> t.add(linkTo(methodOn(TAG_CONTROLLER).getTagById(String.valueOf(t.getId()))).withRel("getTagById")));
@@ -60,7 +59,6 @@ public class CustomerOrderHateoasAdderToCustomer implements HateoasAdder<Custome
             customerOrders.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerList(String.valueOf(pageNumber), String.valueOf(rows))).withRel("getCustomerList"));
             customerOrders.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerOrderByCustomerIdAndOrderId(String.valueOf(customerId),
                     customerOrders.getResources().get(0).getOrderId())).withRel("getCustomerOrderByCustomerIdAndOrderId"));
-            customerOrders.add(linkTo(methodOn(CUSTOMER_CONTROLLER).createCustomerOrder(String.valueOf(customerId), new CustomerOrderDto())).withRel("createCustomerOrder"));
 
             customerOrders.getResources().forEach(o -> {
                 o.add(linkTo(methodOn(CUSTOMER_ORDER_CONTROLLER).getCustomerOrderById(String.valueOf(o.getOrderId()))).withRel("getCustomerOrderById"));

@@ -8,12 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Positive;
@@ -86,5 +81,21 @@ public class CustomerOrderController {
         ResourceDto<CustomerOrderDto> orders = customerOrderService.findListEntities(Integer.parseInt(pageNumber), Integer.parseInt(rows));
         hateoasAdder.addLinksToEntitiesList(orders, Integer.parseInt(rows), Integer.parseInt(pageNumber));
         return orders;
+    }
+
+
+    /**
+     * Method for saving new CustomerOrderDto.
+     * Annotated by {@link Validated} with parameters CustomerOrderDto.OnCreate.class provides validation of the fields of the CustomerOrderDto object when creating.
+     *
+     * @param customerOrder CustomerOrderDto customerOrder
+     * @return created TagDto
+     */
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public CustomerOrderDto createCustomerOrder(@Validated(CustomerOrderDto.OnCreate.class) @RequestBody CustomerOrderDto customerOrder) {
+        CustomerOrderDto customerOrderDto = customerOrderService.createCustomerOrder(customerOrder);
+        hateoasAdder.addLinks(customerOrderDto);
+        return customerOrderDto;
     }
 }

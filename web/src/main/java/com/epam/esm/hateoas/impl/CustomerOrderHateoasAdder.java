@@ -21,7 +21,7 @@ public class CustomerOrderHateoasAdder implements HateoasAdder<CustomerOrderDto>
     public void addLinks(CustomerOrderDto customerOrderDto) {
         customerOrderDto.add(linkTo(methodOn(CUSTOMER_ORDER_CONTROLLER).getCustomerOrderById(customerOrderDto.getOrderId())).withRel("getCustomerOrderById"));
         customerOrderDto.add(linkTo(methodOn(CUSTOMER_ORDER_CONTROLLER).getCustomerOrderList("5", "1")).withRel("getCustomerOrderList"));
-
+        customerOrderDto.add(linkTo(methodOn(CUSTOMER_ORDER_CONTROLLER).createCustomerOrder(new CustomerOrderDto())).withRel("createCustomerOrder"));
         customerOrderDto.getGiftCertificates().forEach(c -> {
             c.add(linkTo(methodOn(CERTIFICATE_CONTROLLER).getCertificateById(c.getCertificateId())).withRel("getCertificateById"));
             c.getTags().forEach(t -> t.add(linkTo(methodOn(TAG_CONTROLLER).getTagById(t.getId())).withRel("getTagById")));
@@ -42,6 +42,7 @@ public class CustomerOrderHateoasAdder implements HateoasAdder<CustomerOrderDto>
         if (pageNumber < (numberPages + 1)) {
             customerOrders.add(linkTo(methodOn(CUSTOMER_ORDER_CONTROLLER).getCustomerOrderById(String.valueOf(customerOrders.getResources().get(0).getCustomerId()))).withRel("getCustomerOrderById"));
             customerOrders.add(linkTo(methodOn(CUSTOMER_ORDER_CONTROLLER).getCustomerOrderList(String.valueOf(pageNumber), String.valueOf(rows))).withRel("getCustomerOrderList"));
+            customerOrders.add(linkTo(methodOn(CUSTOMER_ORDER_CONTROLLER).createCustomerOrder(new CustomerOrderDto())).withRel("createCustomerOrder"));
 
             customerOrders.getResources().forEach(o -> {
                 o.add(linkTo(methodOn(CUSTOMER_ORDER_CONTROLLER).getCustomerOrderById(String.valueOf(o.getOrderId()))).withRel("getCustomerOrderById"));

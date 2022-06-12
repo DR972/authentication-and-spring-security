@@ -10,6 +10,7 @@ import com.epam.esm.service.CustomerService;
 import com.epam.esm.service.DateHandler;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,9 +60,8 @@ public class CustomerOrderServiceImpl extends AbstractService<CustomerOrder, Lon
 
     @Override
     @Transactional
-    public CustomerOrderDto createCustomerOrder(String customerId, CustomerOrderDto customerOrderDto) {
-        customerService.findEntityById(Long.parseLong(customerId));
-        customerOrderDto.setCustomerId(customerId);
+    public CustomerOrderDto createCustomerOrder(CustomerOrderDto customerOrderDto) {
+        customerOrderDto.setCustomerId(String.valueOf(customerService.findCustomerByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).get().getId()));
         customerOrderDto.setPurchaseTime(dateHandler.getCurrentDate());
         List<GiftCertificateDto> certificateDtos = customerOrderDto.getGiftCertificates().stream().map(c -> certificateService.findEntityById(Long.parseLong(c.getCertificateId())))
                 .distinct().collect(Collectors.toList());

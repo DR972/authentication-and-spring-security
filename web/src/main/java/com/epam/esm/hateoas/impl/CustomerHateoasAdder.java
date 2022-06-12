@@ -5,7 +5,6 @@ import com.epam.esm.controller.CustomerController;
 import com.epam.esm.controller.CustomerOrderController;
 import com.epam.esm.controller.TagController;
 import com.epam.esm.dto.CustomerDto;
-import com.epam.esm.dto.CustomerOrderDto;
 import com.epam.esm.dto.ResourceDto;
 import com.epam.esm.hateoas.HateoasAdder;
 import org.springframework.stereotype.Component;
@@ -37,7 +36,6 @@ public class CustomerHateoasAdder implements HateoasAdder<CustomerDto> {
                     String.valueOf(customerDto.getCustomerOrders().get(0).getOrderId()))).withRel("getCustomerOrderByCustomerIdAndOrderId"));
         }
         customerDto.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerOrderList(String.valueOf(customerDto.getCustomerId()), "5", "1")).withRel("getCustomerOrderList"));
-        customerDto.add(linkTo(methodOn(CUSTOMER_CONTROLLER).createCustomerOrder(String.valueOf(customerDto.getCustomerId()), new CustomerOrderDto())).withRel("createCustomerOrder"));
 
         customerDto.getCustomerOrders().forEach(o -> {
             o.add(linkTo(methodOn(CUSTOMER_ORDER_CONTROLLER).getCustomerOrderById(String.valueOf(o.getOrderId()))).withRel("getCustomerOrderById"));
@@ -66,8 +64,7 @@ public class CustomerHateoasAdder implements HateoasAdder<CustomerDto> {
                 customers.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerOrderByCustomerIdAndOrderId(String.valueOf(customers.getResources().get(0).getCustomerId()),
                         String.valueOf(customers.getResources().get(0).getCustomerOrders().get(0).getOrderId()))).withRel("getCustomerOrderByCustomerIdAndOrderId"));
             }
-            customers.add(linkTo(methodOn(CUSTOMER_CONTROLLER).createCustomerOrder(String.valueOf(customers.getResources().get(0).getCustomerId()), new CustomerOrderDto()))
-                    .withRel("createCustomerOrder"));
+
             customers.getResources().forEach(c -> {
                 c.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerById(String.valueOf(c.getCustomerId()))).withRel("getCustomerById"));
                 c.getCustomerOrders().forEach(o -> {

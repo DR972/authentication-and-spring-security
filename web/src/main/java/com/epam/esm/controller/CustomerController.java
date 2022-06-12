@@ -3,7 +3,6 @@ package com.epam.esm.controller;
 import com.epam.esm.dto.CustomerOrderDto;
 import com.epam.esm.dto.ResourceDto;
 import com.epam.esm.hateoas.HateoasAdder;
-import com.epam.esm.service.CustomerOrderService;
 import com.epam.esm.service.CustomerService;
 import com.epam.esm.dto.CustomerDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -43,10 +40,6 @@ public class CustomerController {
      */
     private final CustomerService customerService;
     /**
-     * CustomerOrderService customerOrder Service.
-     */
-    private final CustomerOrderService customerOrderService;
-    /**
      * HateoasAdder<CustomerDto> customerHateoasAdder.
      */
     private final HateoasAdder<CustomerDto> customerHateoasAdder;
@@ -59,15 +52,13 @@ public class CustomerController {
      * The constructor creates a CustomerController object
      *
      * @param customerService      CustomerService customerService
-     * @param customerOrderService CustomerOrderService customerOrder Service
      * @param customerHateoasAdder HateoasAdder<CustomerDto> customerHateoasAdder
      * @param orderHateoasAdder    HateoasAdder<CustomerOrderDto> orderHateoasAdder
      */
     @Autowired
-    public CustomerController(CustomerService customerService, CustomerOrderService customerOrderService, HateoasAdder<CustomerDto> customerHateoasAdder,
+    public CustomerController(CustomerService customerService, HateoasAdder<CustomerDto> customerHateoasAdder,
                               @Qualifier("customerOrderHateoasAdderToCustomer") HateoasAdder<CustomerOrderDto> orderHateoasAdder) {
         this.customerService = customerService;
-        this.customerOrderService = customerOrderService;
         this.customerHateoasAdder = customerHateoasAdder;
         this.orderHateoasAdder = orderHateoasAdder;
     }
@@ -142,23 +133,5 @@ public class CustomerController {
         ResourceDto<CustomerOrderDto> orders = customerService.findListCustomerOrdersByCustomerId(customerId, Integer.parseInt(pageNumber), Integer.parseInt(rows));
         orderHateoasAdder.addLinksToEntitiesList(orders, Integer.parseInt(rows), Integer.parseInt(pageNumber), Integer.parseInt(customerId));
         return orders;
-    }
-
-    /**
-     * Method for saving new CustomerOrderDto.
-     * Annotated by {@link Validated} with parameters CustomerOrderDto.OnCreate.class provides validation of the fields of the CustomerOrderDto object when creating.
-     *
-     * @param customerId    CustomerDto customerId
-     * @param customerOrder CustomerOrderDto customerOrder
-     * @return created TagDto
-     */
-    @PostMapping("{customerId}/orders")
-    @ResponseStatus(HttpStatus.CREATED)
-    public CustomerOrderDto createCustomerOrder(@PathVariable @Positive(message = "ex.customerIdPositive")
-                                                @Digits(integer = 9, fraction = 0, message = "ex.customerIdPositive") String customerId,
-                                                @Validated(CustomerOrderDto.OnCreate.class) @RequestBody CustomerOrderDto customerOrder) {
-        CustomerOrderDto customerOrderDto = customerOrderService.createCustomerOrder(customerId, customerOrder);
-        orderHateoasAdder.addLinks(customerOrderDto);
-        return customerOrderDto;
     }
 }

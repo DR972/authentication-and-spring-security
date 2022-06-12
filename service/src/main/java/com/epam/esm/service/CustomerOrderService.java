@@ -15,9 +15,8 @@ public interface CustomerOrderService extends BaseService<CustomerOrder, Long, C
     /**
      * The method performs the operation of saving CustomerOrder.
      *
-     * @param customerId       Customer customerId
      * @param customerOrderDto CustomerOrderDto
      * @return CustomerOrderDto object
      */
-    CustomerOrderDto createCustomerOrder(String customerId, CustomerOrderDto customerOrderDto);
+    CustomerOrderDto createCustomerOrder(CustomerOrderDto customerOrderDto);
 }
