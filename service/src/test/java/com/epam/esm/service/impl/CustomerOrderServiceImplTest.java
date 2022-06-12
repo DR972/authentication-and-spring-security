@@ -7,6 +7,7 @@ import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.ResourceDto;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.dto.mapper.CustomerOrderMapper;
+import com.epam.esm.entity.Customer;
 import com.epam.esm.entity.CustomerOrder;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Role;
@@ -21,19 +22,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = CustomerOrderServiceImpl.class)
 public class CustomerOrderServiceImplTest {
@@ -67,6 +70,7 @@ public class CustomerOrderServiceImplTest {
     private static final CustomerOrderDto NEW_DTO_CUSTOMER_ORDER = new CustomerOrderDto("0", "2", null, Arrays.asList(GIFT_CERTIFICATE_DTO_1, GIFT_CERTIFICATE_DTO_2), null);
 
     private static final CustomerDto CUSTOMER_DTO_2 = new CustomerDto("2", "Customer2", "qwed", "wse@wss.com", Role.USER, Arrays.asList(CUSTOMER_ORDER_DTO_2, CUSTOMER_ORDER_DTO_6));
+    private static final Customer CUSTOMER_2 = new Customer("Customer2", "qwed", "wse@wss.com", Role.ADMIN, Collections.singletonList(CUSTOMER_ORDER_2));
 
     @MockBean
     private CustomerOrderDao customerOrderDao;
@@ -78,6 +82,10 @@ public class CustomerOrderServiceImplTest {
     private GiftCertificateService certificateService;
     @MockBean
     private DateHandler dateHandler;
+    @MockBean
+    private Authentication authentication;
+    @MockBean
+    private SecurityContext securityContext;
     @Autowired
     private CustomerOrderServiceImpl customerOrderService;
 
@@ -117,11 +125,16 @@ public class CustomerOrderServiceImplTest {
         when(certificateService.findEntityById(1L)).thenReturn(GIFT_CERTIFICATE_DTO_1);
         when(certificateService.findEntityById(2L)).thenReturn(GIFT_CERTIFICATE_DTO_2);
 
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(securityContext.getAuthentication().getName()).thenReturn(CUSTOMER_2.getEmail());
+        when(customerService.findCustomerByEmail(CUSTOMER_2.getEmail())).thenReturn(Optional.of(CUSTOMER_2));
+
         when(customerOrderMapper.convertToEntity(NEW_DTO_CUSTOMER_ORDER)).thenReturn(NEW_CUSTOMER_ORDER);
         when(customerOrderMapper.convertToDto(NEW_CUSTOMER_ORDER)).thenReturn(NEW_DTO_CUSTOMER_ORDER);
         when(customerOrderDao.save(NEW_CUSTOMER_ORDER)).thenReturn(NEW_CUSTOMER_ORDER);
-        customerOrderService.createCustomerOrder("2", NEW_DTO_CUSTOMER_ORDER);
+        customerOrderService.createCustomerOrder(NEW_DTO_CUSTOMER_ORDER);
         verify(customerOrderDao, times(1)).save(NEW_CUSTOMER_ORDER);
-        assertEquals(NEW_DTO_CUSTOMER_ORDER, customerOrderService.createCustomerOrder("2", NEW_DTO_CUSTOMER_ORDER));
+        assertEquals(NEW_DTO_CUSTOMER_ORDER, customerOrderService.createCustomerOrder(NEW_DTO_CUSTOMER_ORDER));
     }
 }
