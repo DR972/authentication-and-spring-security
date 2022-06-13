@@ -1,15 +1,12 @@
 package com.epam.esm.exception;
 
-import lombok.EqualsAndHashCode;
-
 /**
  * The class {@code NoSuchEntityException} is generated in case entity doesn't found in database.
  *
  * @author Dzmitry Rozmysl
  * @version 1.0
- * @see RuntimeException
+ * @see EntityException
  */
-@EqualsAndHashCode(callSuper = true)
 public class NoSuchEntityException extends EntityException {
 
     /**

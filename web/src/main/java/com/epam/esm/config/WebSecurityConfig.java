@@ -27,7 +27,6 @@ import static org.springframework.http.HttpMethod.POST;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String ADMIN = "ADMIN";
-    private static final String USER = "USER";
     /**
      * JWTFilter jwtFilter.
      */

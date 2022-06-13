@@ -1,15 +1,12 @@
 package com.epam.esm.exception;
 
-import lombok.EqualsAndHashCode;
-
 /**
  * The class {@code DuplicateEntityException} is generated in case entity already exists in database.
  *
  * @author Dzmitry Rozmysl
  * @version 1.0
- * @see RuntimeException
+ * @see EntityException
  */
-@EqualsAndHashCode(callSuper = true)
 public class DuplicateEntityException extends EntityException {
 
     /**

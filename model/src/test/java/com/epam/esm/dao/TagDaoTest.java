@@ -15,6 +15,20 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static com.epam.esm.dao.util.TestDataProvider.NEW_TAG;
+import static com.epam.esm.dao.util.TestDataProvider.NEW_TAG_5;
+import static com.epam.esm.dao.util.TestDataProvider.TAG_1;
+import static com.epam.esm.dao.util.TestDataProvider.TAG_10;
+import static com.epam.esm.dao.util.TestDataProvider.TAG_11;
+import static com.epam.esm.dao.util.TestDataProvider.TAG_12;
+import static com.epam.esm.dao.util.TestDataProvider.TAG_2;
+import static com.epam.esm.dao.util.TestDataProvider.TAG_3;
+import static com.epam.esm.dao.util.TestDataProvider.TAG_4;
+import static com.epam.esm.dao.util.TestDataProvider.TAG_5;
+import static com.epam.esm.dao.util.TestDataProvider.TAG_6;
+import static com.epam.esm.dao.util.TestDataProvider.TAG_7;
+import static com.epam.esm.dao.util.TestDataProvider.TAG_8;
+import static com.epam.esm.dao.util.TestDataProvider.TAG_9;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
@@ -29,21 +44,6 @@ import java.util.Optional;
 @ActiveProfiles("test")
 @Transactional
 public class TagDaoTest {
-    private static final Tag TAG_1 = new Tag(1, "rest");
-    private static final Tag TAG_2 = new Tag(2, "nature");
-    private static final Tag TAG_3 = new Tag(3, "shopping");
-    private static final Tag TAG_4 = new Tag(4, "atv");
-    private static final Tag TAG_5 = new Tag(5, "horse");
-    private static final Tag TAG_6 = new Tag(6, "theater");
-    private static final Tag TAG_7 = new Tag(7, "tool");
-    private static final Tag TAG_8 = new Tag(8, "food");
-    private static final Tag TAG_9 = new Tag(9, "supermarket");
-    private static final Tag TAG_10 = new Tag(10, "restaurant");
-    private static final Tag TAG_11 = new Tag(11, "flight");
-    private static final Tag TAG_12 = new Tag(12, "visit");
-    private static final Tag NEW_TAG = new Tag("new");
-    private static final Tag NEW_TAG_5 = new Tag(5, "new horse");
-
     private final DataSource dataSource;
     private final TagDao tagDao;
 
@@ -61,34 +61,50 @@ public class TagDaoTest {
     }
 
     @Test
-    void findEntityShouldReturnResult() {
-        assertEquals(tagDao.findById(1L), Optional.of(TAG_1));
-        assertEquals(tagDao.findTagByName(TAG_2.getName()), Optional.of(TAG_2));
+    void findEntityByIdShouldReturnResult() {
+        Optional<Tag> actual = tagDao.findById(1L);
+        assertEquals(Optional.of(TAG_1), actual);
+    }
+
+    @Test
+    void findTagByNameShouldReturnResult() {
+        Optional<Tag> actual = tagDao.findTagByName(TAG_2.getName());
+        assertEquals(Optional.of(TAG_2), actual);
     }
 
     @Test
     void findListEntitiesShouldReturnResult() {
-        assertEquals(tagDao.findAll(PageRequest.of(0, 10)).getContent(), Arrays.asList(TAG_1, TAG_2, TAG_3, TAG_4, TAG_5, TAG_6, TAG_7, TAG_8, TAG_9, TAG_10));
-        assertEquals(tagDao.findAll(PageRequest.of(1, 10)).getContent(), Arrays.asList(TAG_11, TAG_12));
+        List<Tag> actual1 = tagDao.findAll(PageRequest.of(0, 10)).getContent();
+        List<Tag> expected1 = Arrays.asList(TAG_1, TAG_2, TAG_3, TAG_4, TAG_5, TAG_6, TAG_7, TAG_8, TAG_9, TAG_10);
+        assertEquals(expected1, actual1);
+
+        List<Tag> actual2 = tagDao.findAll(PageRequest.of(1, 10)).getContent();
+        List<Tag> expected2 = Arrays.asList(TAG_11, TAG_12);
+        assertEquals(expected2, actual2);
     }
 
     @Test
     void createEntityShouldReturnResult() {
-        assertEquals(tagDao.save(NEW_TAG), NEW_TAG);
+        Tag actual = tagDao.save(NEW_TAG);
+        assertEquals(NEW_TAG, actual);
     }
 
     @Test
     void updateEntityShouldReturnResult() {
-        assertEquals(tagDao.save(NEW_TAG_5), NEW_TAG_5);
+        Tag actual = tagDao.save(NEW_TAG_5);
+        assertEquals(NEW_TAG_5, actual);
     }
 
     @Test
     void findMostWidelyUsedTagsOfCustomersWithHighestCostOfAllOrdersShouldReturnResult() {
-        assertEquals(tagDao.findMostPopularTag(PageRequest.of(0, 5)).getContent(), Collections.singletonList(TAG_3));
+        List<Tag> actual = tagDao.findMostPopularTag(PageRequest.of(0, 5)).getContent();
+        List<Tag> expected = Collections.singletonList(TAG_3);
+        assertEquals(expected, actual);
     }
 
     @Test
     void countNumberEntityRowsShouldReturnResult() {
-        assertEquals(tagDao.count(), 12);
+        long actual = tagDao.count();
+        assertEquals(12, actual);
     }
 }

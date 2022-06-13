@@ -1,15 +1,12 @@
 package com.epam.esm.exception;
 
-import lombok.EqualsAndHashCode;
-
 /**
  * The class {@code SortValueException} is generated if incorrect sorting types are specified.
  *
  * @author Dzmitry Rozmysl
  * @version 1.0
- * @see RuntimeException
+ * @see EntityException
  */
-@EqualsAndHashCode(callSuper = true)
 public class SortValueException extends EntityException {
 
     /**
