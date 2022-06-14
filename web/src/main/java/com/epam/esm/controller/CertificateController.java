@@ -4,7 +4,7 @@ import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.ResourceDto;
 import com.epam.esm.hateoas.HateoasAdder;
 import com.epam.esm.service.GiftCertificateService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
@@ -33,6 +33,7 @@ import javax.validation.constraints.Positive;
  * @author Dzmitry Rozmysl
  * @since 1.0
  */
+@Data
 @RestController
 @RequestMapping("/certificates")
 @Validated
@@ -47,18 +48,6 @@ public class CertificateController {
      * HateoasAdder<GiftCertificateDto> hateoasAdder.
      */
     private final HateoasAdder<GiftCertificateDto> hateoasAdder;
-
-    /**
-     * The constructor creates a CertificateController object
-     *
-     * @param certificateService GiftCertificateService certificateService
-     * @param hateoasAdder       HateoasAdder<GiftCertificateDto> hateoasAdder
-     */
-    @Autowired
-    public CertificateController(GiftCertificateService certificateService, HateoasAdder<GiftCertificateDto> hateoasAdder) {
-        this.certificateService = certificateService;
-        this.hateoasAdder = hateoasAdder;
-    }
 
     /**
      * Method for getting GiftCertificateDto by ID.

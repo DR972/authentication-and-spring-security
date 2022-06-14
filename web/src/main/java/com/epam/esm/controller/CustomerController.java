@@ -56,7 +56,7 @@ public class CustomerController {
      * @param orderHateoasAdder    HateoasAdder<CustomerOrderDto> orderHateoasAdder
      */
     @Autowired
-    public CustomerController(CustomerService customerService, HateoasAdder<CustomerDto> customerHateoasAdder,
+    public CustomerController(CustomerService customerService, @Qualifier("customerHateoasAdder") HateoasAdder<CustomerDto> customerHateoasAdder,
                               @Qualifier("customerOrderHateoasAdderToCustomer") HateoasAdder<CustomerOrderDto> orderHateoasAdder) {
         this.customerService = customerService;
         this.customerHateoasAdder = customerHateoasAdder;

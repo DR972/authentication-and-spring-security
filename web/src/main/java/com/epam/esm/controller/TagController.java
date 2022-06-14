@@ -4,7 +4,7 @@ import com.epam.esm.dto.ResourceDto;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.hateoas.HateoasAdder;
 import com.epam.esm.service.TagService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -32,6 +32,7 @@ import javax.validation.constraints.Positive;
  * @author Dzmitry Rozmysl
  * @since 1.0
  */
+@Data
 @RestController
 @RequestMapping("/tags")
 @Validated
@@ -46,18 +47,6 @@ public class TagController {
      * HateoasAdder<TagDto> hateoasAdder.
      */
     private final HateoasAdder<TagDto> hateoasAdder;
-
-    /**
-     * The constructor creates a TagController object
-     *
-     * @param tagService   TagService tagService
-     * @param hateoasAdder HateoasAdder<TagDto> hateoasAdder
-     */
-    @Autowired
-    public TagController(TagService tagService, HateoasAdder<TagDto> hateoasAdder) {
-        this.tagService = tagService;
-        this.hateoasAdder = hateoasAdder;
-    }
 
     /**
      * Method for getting TagDto by ID.

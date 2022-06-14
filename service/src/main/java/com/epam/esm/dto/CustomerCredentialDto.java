@@ -3,7 +3,9 @@ package com.epam.esm.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 /**
  * The class {@code CustomerCredentialDto} represents user credentials.
@@ -11,10 +13,11 @@ import lombok.NoArgsConstructor;
  * @author Dzmitry Rozmysl
  * @version 1.0
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerCredentialDto {
+public class CustomerCredentialDto extends RepresentationModel<CustomerCredentialDto> {
     /**
      * String email.
      */

@@ -1,14 +1,13 @@
 package com.epam.esm.hateoas.impl;
 
-import com.epam.esm.controller.CertificateController;
-import com.epam.esm.controller.TagController;
 import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.ResourceDto;
 import com.epam.esm.hateoas.HateoasAdder;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.CERTIFICATE_CONTROLLER;
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.TAG_CONTROLLER;
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.allRequestParams;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -21,26 +20,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  */
 @Component
 public class GiftCertificateHateoasAdder implements HateoasAdder<GiftCertificateDto> {
-    private static final Class<CertificateController> CERTIFICATE_CONTROLLER = CertificateController.class;
-    private static final Class<TagController> TAG_CONTROLLER = TagController.class;
-    private static final String NAME = "name";
-    private static final String TAG = "tag";
-    private static final String SORTING = "sorting";
-    private static final String DESCRIPTION = "description";
-    private static final MultiValueMap<String, String> allRequestParams = new LinkedMultiValueMap<>();
-
-    static {
-        allRequestParams.add(SORTING, "lastUpdateDate");
-        allRequestParams.add(SORTING, "name");
-        allRequestParams.add(SORTING, "id");
-        allRequestParams.add(SORTING, "price");
-        allRequestParams.add(TAG, "lobortis est");
-        allRequestParams.add(TAG, "hendrerit at");
-        allRequestParams.add(NAME, "suspend");
-        allRequestParams.add(NAME, "ligula");
-        allRequestParams.add(DESCRIPTION, "ipsum");
-        allRequestParams.add(DESCRIPTION, "primis");
-    }
 
     @Override
     public void addLinks(GiftCertificateDto certificateDto) {

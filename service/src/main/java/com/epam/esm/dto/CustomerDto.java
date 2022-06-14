@@ -42,6 +42,7 @@ public class CustomerDto extends RepresentationModel<CustomerDto> implements Bas
      * String password.
      */
     @NotNull(message = "ex.customerPasswordNotNull")
+//    @Pattern(regexp = "(?=.*\\\\d)(?=.*[a-z])(?=.*[A-Z]).{6,30}", message = "ex.password")
     private String password;
 
     /**
