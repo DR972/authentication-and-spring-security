@@ -4,11 +4,18 @@ import com.epam.esm.dto.ResourceDto;
 import com.epam.esm.hateoas.HateoasAdder;
 import com.epam.esm.service.CustomerOrderService;
 import com.epam.esm.dto.CustomerOrderDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Positive;
@@ -23,6 +30,7 @@ import javax.validation.constraints.Positive;
  * @author Dzmitry Rozmysl
  * @since 1.0
  */
+@Data
 @RestController
 @RequestMapping("/orders")
 @Validated
@@ -36,19 +44,8 @@ public class CustomerOrderController {
     /**
      * HateoasAdder<CustomerOrderDto> hateoasAdder.
      */
-    private final HateoasAdder<CustomerOrderDto> hateoasAdder;
-
-    /**
-     * The constructor creates a CustomerOrderController object
-     *
-     * @param customerOrderService CustomerOrderService customerOrder Service
-     * @param hateoasAdder         HateoasAdder<CustomerOrderDto> hateoasAdder
-     */
-    @Autowired
-    public CustomerOrderController(CustomerOrderService customerOrderService, @Qualifier("customerOrderHateoasAdder") HateoasAdder<CustomerOrderDto> hateoasAdder) {
-        this.customerOrderService = customerOrderService;
-        this.hateoasAdder = hateoasAdder;
-    }
+    @Qualifier("customerOrderHateoasAdder")
+    private HateoasAdder<CustomerOrderDto> hateoasAdder;
 
     /**
      * Method for getting CustomerOrderDto by ID.

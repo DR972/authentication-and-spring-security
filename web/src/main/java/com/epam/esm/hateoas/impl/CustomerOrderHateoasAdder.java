@@ -1,21 +1,18 @@
 package com.epam.esm.hateoas.impl;
 
-import com.epam.esm.controller.CertificateController;
-import com.epam.esm.controller.CustomerOrderController;
-import com.epam.esm.controller.TagController;
 import com.epam.esm.dto.CustomerOrderDto;
 import com.epam.esm.dto.ResourceDto;
 import com.epam.esm.hateoas.HateoasAdder;
 import org.springframework.stereotype.Component;
 
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.CERTIFICATE_CONTROLLER;
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.CUSTOMER_ORDER_CONTROLLER;
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.TAG_CONTROLLER;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component("customerOrderHateoasAdder")
 public class CustomerOrderHateoasAdder implements HateoasAdder<CustomerOrderDto> {
-    private static final Class<CustomerOrderController> CUSTOMER_ORDER_CONTROLLER = CustomerOrderController.class;
-    private static final Class<CertificateController> CERTIFICATE_CONTROLLER = CertificateController.class;
-    private static final Class<TagController> TAG_CONTROLLER = TagController.class;
 
     @Override
     public void addLinks(CustomerOrderDto customerOrderDto) {

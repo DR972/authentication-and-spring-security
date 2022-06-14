@@ -19,7 +19,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * @author Dzmitry Rozmysl
  * @since 1.0
  */
-@Component
+@Component("customerHateoasAdder")
 public class CustomerHateoasAdder implements HateoasAdder<CustomerDto> {
     private static final Class<CustomerController> CUSTOMER_CONTROLLER = CustomerController.class;
     private static final Class<CustomerOrderController> CUSTOMER_ORDER_CONTROLLER = CustomerOrderController.class;

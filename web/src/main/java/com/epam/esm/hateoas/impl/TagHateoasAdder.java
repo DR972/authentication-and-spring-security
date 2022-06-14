@@ -1,11 +1,11 @@
 package com.epam.esm.hateoas.impl;
 
-import com.epam.esm.controller.TagController;
 import com.epam.esm.dto.ResourceDto;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.hateoas.HateoasAdder;
 import org.springframework.stereotype.Component;
 
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.TAG_CONTROLLER;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -18,7 +18,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  */
 @Component
 public class TagHateoasAdder implements HateoasAdder<TagDto> {
-    private static final Class<TagController> TAG_CONTROLLER = TagController.class;
 
     @Override
     public void addLinks(TagDto tagDto) {

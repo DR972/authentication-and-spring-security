@@ -5,7 +5,7 @@ import com.epam.esm.dto.ResourceDto;
 import com.epam.esm.hateoas.HateoasAdder;
 import com.epam.esm.service.CustomerService;
 import com.epam.esm.dto.CustomerDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -29,6 +29,7 @@ import javax.validation.constraints.Positive;
  * @author Dzmitry Rozmysl
  * @since 1.0
  */
+@Data
 @RestController
 @RequestMapping("/customers")
 @Validated
@@ -42,26 +43,13 @@ public class CustomerController {
     /**
      * HateoasAdder<CustomerDto> customerHateoasAdder.
      */
+    @Qualifier("customerHateoasAdder")
     private final HateoasAdder<CustomerDto> customerHateoasAdder;
     /**
      * HateoasAdder<CustomerOrderDto> orderHateoasAdder.
      */
-    private final HateoasAdder<CustomerOrderDto> orderHateoasAdder;
-
-    /**
-     * The constructor creates a CustomerController object
-     *
-     * @param customerService      CustomerService customerService
-     * @param customerHateoasAdder HateoasAdder<CustomerDto> customerHateoasAdder
-     * @param orderHateoasAdder    HateoasAdder<CustomerOrderDto> orderHateoasAdder
-     */
-    @Autowired
-    public CustomerController(CustomerService customerService, HateoasAdder<CustomerDto> customerHateoasAdder,
-                              @Qualifier("customerOrderHateoasAdderToCustomer") HateoasAdder<CustomerOrderDto> orderHateoasAdder) {
-        this.customerService = customerService;
-        this.customerHateoasAdder = customerHateoasAdder;
-        this.orderHateoasAdder = orderHateoasAdder;
-    }
+    @Qualifier("customerOrderHateoasAdderToCustomer")
+    private HateoasAdder<CustomerOrderDto> orderHateoasAdder;
 
     /**
      * Method for getting CustomerDto by ID.
