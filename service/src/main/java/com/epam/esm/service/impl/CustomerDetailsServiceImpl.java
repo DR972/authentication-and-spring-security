@@ -42,15 +42,12 @@ public class CustomerDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        Optional<Customer> user = customerDao.findCustomerByEmail(email);
-        if (!user.isPresent()) {
-            throw new BadCredentialsException("ex.badUser");
-        }
+        Customer user = customerDao.findCustomerByEmail(email).orElseThrow(() -> new BadCredentialsException("ex.badUser"));
         return User.builder()
-                .username(user.get().getEmail())
-                .password(user.get().getPassword())
-                .roles(user.get().getRole().name())
-                .authorities(Collections.singletonList(new SimpleGrantedAuthority(ROLE_PREFIX + user.get().getRole().toString())))
+                .username(user.getEmail())
+                .password(user.getPassword())
+                .roles(user.getRole().name())
+                .authorities(Collections.singletonList(new SimpleGrantedAuthority(ROLE_PREFIX + user.getRole().toString())))
                 .build();
     }
 }

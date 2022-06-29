@@ -61,9 +61,6 @@ public class CustomerOrderServiceImpl extends AbstractService<CustomerOrder, Lon
     @Override
     @Transactional
     public CustomerOrderDto createCustomerOrder(CustomerOrderDto customerOrderDto) {
-        System.out.println(customerOrderDto);
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
-        System.out.println(customerService.findCustomerByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).get().getId());
         customerOrderDto.setCustomerId(String.valueOf(customerService.findCustomerByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).get().getId()));
         customerOrderDto.setPurchaseTime(dateHandler.getCurrentDate());
         List<GiftCertificateDto> certificateDtos = customerOrderDto.getGiftCertificates().stream().map(c -> certificateService.findEntityById(Long.parseLong(c.getCertificateId())))
