@@ -30,6 +30,9 @@ public class JWTProvider {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
+    /**
+     * The constructor creates a JWTProvider object
+     */
     public JWTProvider() {
     }
 

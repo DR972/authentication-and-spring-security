@@ -1,14 +1,25 @@
 package com.epam.esm.hateoas.impl;
 
-import com.epam.esm.controller.CertificateController;
-import com.epam.esm.controller.CustomerController;
-import com.epam.esm.controller.CustomerOrderController;
-import com.epam.esm.controller.TagController;
 import com.epam.esm.dto.CustomerDto;
 import com.epam.esm.dto.ResourceDto;
 import com.epam.esm.hateoas.HateoasAdder;
 import org.springframework.stereotype.Component;
 
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.CERTIFICATE_CONTROLLER;
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.CUSTOMER_CONTROLLER;
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.CUSTOMER_ORDER_CONTROLLER;
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.GET_CUSTOMER_BY_ID;
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.GET_CUSTOMER_LIST;
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.GET_CUSTOMER_ORDER_BY_CUSTOMER_ID_AND_ORDER_ID;
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.GET_CUSTOMER_ORDER_BY_ID;
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.GET_CUSTOMER_ORDER_LIST;
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.GET_GIFT_CERTIFICATE_BY_ID;
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.GET_TAG_BY_ID;
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.LAST_PAGE;
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.NEXT_PAGE;
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.PAGE_1;
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.PREVIOUS_PAGE;
+import static com.epam.esm.hateoas.impl.util.RequestParameterProvider.TAG_CONTROLLER;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -21,27 +32,23 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  */
 @Component("customerHateoasAdder")
 public class CustomerHateoasAdder implements HateoasAdder<CustomerDto> {
-    private static final Class<CustomerController> CUSTOMER_CONTROLLER = CustomerController.class;
-    private static final Class<CustomerOrderController> CUSTOMER_ORDER_CONTROLLER = CustomerOrderController.class;
-    private static final Class<CertificateController> CERTIFICATE_CONTROLLER = CertificateController.class;
-    private static final Class<TagController> TAG_CONTROLLER = TagController.class;
 
     @Override
     public void addLinks(CustomerDto customerDto) {
-        customerDto.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerById(String.valueOf(customerDto.getCustomerId()))).withRel("getCustomerById"));
-        customerDto.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerList("5", "1")).withRel("getCustomerList"));
+        customerDto.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerById(String.valueOf(customerDto.getCustomerId()))).withRel(GET_CUSTOMER_BY_ID));
+        customerDto.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerList("5", "1")).withRel(GET_CUSTOMER_LIST));
 
         if (!customerDto.getCustomerOrders().isEmpty()) {
             customerDto.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerOrderByCustomerIdAndOrderId(String.valueOf(customerDto.getCustomerId()),
-                    String.valueOf(customerDto.getCustomerOrders().get(0).getOrderId()))).withRel("getCustomerOrderByCustomerIdAndOrderId"));
+                    String.valueOf(customerDto.getCustomerOrders().get(0).getOrderId()))).withRel(GET_CUSTOMER_ORDER_BY_CUSTOMER_ID_AND_ORDER_ID));
         }
-        customerDto.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerOrderList(String.valueOf(customerDto.getCustomerId()), "5", "1")).withRel("getCustomerOrderList"));
+        customerDto.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerOrderList(String.valueOf(customerDto.getCustomerId()), "5", "1")).withRel(GET_CUSTOMER_ORDER_LIST));
 
         customerDto.getCustomerOrders().forEach(o -> {
-            o.add(linkTo(methodOn(CUSTOMER_ORDER_CONTROLLER).getCustomerOrderById(String.valueOf(o.getOrderId()))).withRel("getCustomerOrderById"));
+            o.add(linkTo(methodOn(CUSTOMER_ORDER_CONTROLLER).getCustomerOrderById(String.valueOf(o.getOrderId()))).withRel(GET_CUSTOMER_ORDER_BY_ID));
             o.getGiftCertificates().forEach(c -> {
-                c.add(linkTo(methodOn(CERTIFICATE_CONTROLLER).getCertificateById(String.valueOf(c.getCertificateId()))).withRel("getCertificateById"));
-                c.getTags().forEach(t -> t.add(linkTo(methodOn(TAG_CONTROLLER).getTagById(String.valueOf(t.getId()))).withRel("getTagById")));
+                c.add(linkTo(methodOn(CERTIFICATE_CONTROLLER).getCertificateById(String.valueOf(c.getCertificateId()))).withRel(GET_GIFT_CERTIFICATE_BY_ID));
+                c.getTags().forEach(t -> t.add(linkTo(methodOn(TAG_CONTROLLER).getTagById(String.valueOf(t.getId()))).withRel(GET_TAG_BY_ID)));
             });
         });
     }
@@ -51,7 +58,7 @@ public class CustomerHateoasAdder implements HateoasAdder<CustomerDto> {
         int rows = params[0];
         int pageNumber = params[1];
         int numberPages = (int) Math.ceil((float) customers.getTotalNumberObjects() / rows);
-        customers.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerList(String.valueOf(pageNumber), String.valueOf(rows))).withRel("getCustomerList"));
+        customers.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerList(String.valueOf(pageNumber), String.valueOf(rows))).withRel(GET_CUSTOMER_LIST));
 
         addSimpleResourceLinks(customers, pageNumber, numberPages);
         addLinksToResourcesListPages(customers, pageNumber, rows, numberPages);
@@ -59,19 +66,19 @@ public class CustomerHateoasAdder implements HateoasAdder<CustomerDto> {
 
     private void addSimpleResourceLinks(ResourceDto<CustomerDto> customers, int pageNumber, int numberPages) {
         if (pageNumber < (numberPages + 1)) {
-            customers.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerById(String.valueOf(customers.getResources().get(0).getCustomerId()))).withRel("getCustomerById"));
+            customers.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerById(String.valueOf(customers.getResources().get(0).getCustomerId()))).withRel(GET_CUSTOMER_BY_ID));
             if (!customers.getResources().get(0).getCustomerOrders().isEmpty()) {
                 customers.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerOrderByCustomerIdAndOrderId(String.valueOf(customers.getResources().get(0).getCustomerId()),
-                        String.valueOf(customers.getResources().get(0).getCustomerOrders().get(0).getOrderId()))).withRel("getCustomerOrderByCustomerIdAndOrderId"));
+                        String.valueOf(customers.getResources().get(0).getCustomerOrders().get(0).getOrderId()))).withRel(GET_CUSTOMER_ORDER_BY_CUSTOMER_ID_AND_ORDER_ID));
             }
 
             customers.getResources().forEach(c -> {
-                c.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerById(String.valueOf(c.getCustomerId()))).withRel("getCustomerById"));
+                c.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerById(String.valueOf(c.getCustomerId()))).withRel(GET_CUSTOMER_BY_ID));
                 c.getCustomerOrders().forEach(o -> {
-                    o.add(linkTo(methodOn(CUSTOMER_ORDER_CONTROLLER).getCustomerOrderById(String.valueOf(o.getOrderId()))).withRel("getCustomerOrderById"));
+                    o.add(linkTo(methodOn(CUSTOMER_ORDER_CONTROLLER).getCustomerOrderById(String.valueOf(o.getOrderId()))).withRel(GET_CUSTOMER_ORDER_BY_ID));
                     o.getGiftCertificates().forEach(g -> {
-                        g.add(linkTo(methodOn(CERTIFICATE_CONTROLLER).getCertificateById(String.valueOf(g.getCertificateId()))).withRel("getCertificateById"));
-                        g.getTags().forEach(t -> t.add(linkTo(methodOn(TAG_CONTROLLER).getTagById(String.valueOf(t.getId()))).withRel("getTagById")));
+                        g.add(linkTo(methodOn(CERTIFICATE_CONTROLLER).getCertificateById(String.valueOf(g.getCertificateId()))).withRel(GET_GIFT_CERTIFICATE_BY_ID));
+                        g.getTags().forEach(t -> t.add(linkTo(methodOn(TAG_CONTROLLER).getTagById(String.valueOf(t.getId()))).withRel(GET_TAG_BY_ID)));
                     });
                 });
             });
@@ -80,16 +87,16 @@ public class CustomerHateoasAdder implements HateoasAdder<CustomerDto> {
 
     private void addLinksToResourcesListPages(ResourceDto<CustomerDto> customers, int pageNumber, int rows, int numberPages) {
         if (numberPages > 1) {
-            customers.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerList("1", String.valueOf(rows))).withRel("getCustomerList page 1"));
+            customers.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerList("1", String.valueOf(rows))).withRel(GET_CUSTOMER_LIST + PAGE_1));
             if (pageNumber > 2 && pageNumber < (numberPages + 1)) {
                 customers.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerList(String.valueOf(pageNumber - 1), String.valueOf(rows)))
-                        .withRel("getCustomerList previous page " + (pageNumber - 1)));
+                        .withRel(GET_CUSTOMER_LIST + PREVIOUS_PAGE + (pageNumber - 1)));
             }
             if (pageNumber < (numberPages - 1)) {
                 customers.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerList(String.valueOf(pageNumber + 1), String.valueOf(rows)))
-                        .withRel("getCustomerList next page " + (pageNumber + 1)));
+                        .withRel(GET_CUSTOMER_LIST + NEXT_PAGE + (pageNumber + 1)));
             }
-            customers.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerList(String.valueOf(numberPages), String.valueOf(rows))).withRel("getCustomerList last page " + numberPages));
+            customers.add(linkTo(methodOn(CUSTOMER_CONTROLLER).getCustomerList(String.valueOf(numberPages), String.valueOf(rows))).withRel(GET_CUSTOMER_LIST + LAST_PAGE + numberPages));
         }
     }
 }

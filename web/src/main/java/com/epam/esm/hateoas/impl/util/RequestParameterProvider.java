@@ -27,6 +27,22 @@ public final class RequestParameterProvider {
     public static final String DESCRIPTION = "description";
     public static final MultiValueMap<String, String> allRequestParams = new LinkedMultiValueMap<>();
 
+    public static final String GET_TAG_BY_ID = "getTagById";
+    public static final String GET_TAG_LIST = "getTagList";
+    public static final String GET_GIFT_CERTIFICATE_BY_ID = "getGiftCertificateById";
+    public static final String GET_GIFT_CERTIFICATE_LIST = "getGiftCertificateList";
+    public static final String GET_MOST_POPULAR_TAGS = "getMostWidelyUsedTagsOfCustomersWithHighestCostOfAllOrders";
+    public static final String GET_CUSTOMER_BY_ID = "getCustomerById";
+    public static final String GET_CUSTOMER_LIST = "getCustomerList";
+    public static final String GET_CUSTOMER_ORDER_BY_ID = "getCustomerOrderById";
+    public static final String GET_CUSTOMER_ORDER_LIST = "getCustomerOrderList";
+    public static final String CREATE_CUSTOMER_ORDER = "createCustomerOrder";
+    public static final String GET_CUSTOMER_ORDER_BY_CUSTOMER_ID_AND_ORDER_ID = "getCustomerOrderByCustomerIdAndOrderId";
+    public static final String PAGE_1 = " page 1";
+    public static final String PREVIOUS_PAGE = " previous page ";
+    public static final String NEXT_PAGE = " next page ";
+    public static final String LAST_PAGE = " last page ";
+
     static {
         allRequestParams.add(SORTING, "lastUpdateDate");
         allRequestParams.add(SORTING, "name");
