@@ -16,7 +16,7 @@ import com.epam.esm.entity.BaseEntity;
 public interface BaseService<T extends BaseEntity<ID>, ID, D extends BaseEntityDto> {
 
     /**
-     * The method finds objects T in the table 'T' by id.
+     * The method finds objects D in the table 'D' by id.
      *
      * @param id Long id
      * @return D object
@@ -24,7 +24,7 @@ public interface BaseService<T extends BaseEntity<ID>, ID, D extends BaseEntityD
     D findEntityById(ID id);
 
     /**
-     * The method finds list T objects in the table `T`.
+     * The method finds list D objects in the table `D`.
      *
      * @param pageNumber int pageNumber
      * @param limit      int limit

@@ -2,9 +2,11 @@ package com.epam.esm;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication(scanBasePackages = "com.epam.esm")
-public class ApplicationRunner {
+public class ApplicationRunner extends SpringBootServletInitializer {
 
     /**
      * The entry point of Spring Boot application.

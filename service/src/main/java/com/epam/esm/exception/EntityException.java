@@ -17,7 +17,7 @@ public class EntityException extends RuntimeException {
     /**
      * parameters that caused the EntityException exception.
      */
-    private String parameters;
+    private final String parameters;
 
     public EntityException(String message, String parameters) {
         super(message);
