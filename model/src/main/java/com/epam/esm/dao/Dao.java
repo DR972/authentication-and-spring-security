@@ -13,5 +13,5 @@ import org.springframework.stereotype.Repository;
  * @version 1.0
  */
 @Repository
-public interface Dao<T extends BaseEntity<ID>, ID> extends JpaRepository<T, ID>, PagingAndSortingRepository<T, ID> {
+public interface Dao<T extends BaseEntity<I>, I> extends JpaRepository<T, I>, PagingAndSortingRepository<T, I> {
 }

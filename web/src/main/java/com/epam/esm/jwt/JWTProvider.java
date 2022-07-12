@@ -30,11 +30,11 @@ public class JWTProvider {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    /**
-     * The constructor creates a JWTProvider object
-     */
-    public JWTProvider() {
-    }
+//    /**
+//     * The constructor creates a JWTProvider object
+//     */
+//    public JWTProvider() {
+//    }
 
     /**
      * This method generates a unique user token after authorization.

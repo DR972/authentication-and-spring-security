@@ -35,5 +35,6 @@ public class CustomerRegistrationHateoasAdder implements HateoasAdder<CustomerDt
 
     @Override
     public void addLinksToEntitiesList(ResourceDto<CustomerDto> customers, int... params) {
+        throw new UnsupportedOperationException();
     }
 }

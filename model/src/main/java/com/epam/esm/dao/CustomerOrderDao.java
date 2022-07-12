@@ -19,7 +19,7 @@ import java.util.Optional;
 public interface CustomerOrderDao extends Dao<CustomerOrder, Long> {
 
     /**
-     * The method finds objects CustomerOrder in the table 'CustomerOrder' by CustomerOrder id and Customer id.
+     * The method finds objects CustomerOrder in the table 'CustomerOrder' by CustomerOrder i and Customer i.
      *
      * @param customerId long customerId
      * @param orderId    long orderId
@@ -36,7 +36,7 @@ public interface CustomerOrderDao extends Dao<CustomerOrder, Long> {
     List<CustomerOrder> findCustomerOrderByGiftCertificates(GiftCertificate certificate);
 
     /**
-     * The method finds list CustomerOrder objects in the table `CustomerOrder` by Customer id.
+     * The method finds list CustomerOrder objects in the table `CustomerOrder` by Customer i.
      *
      * @param customerId long customerId
      * @param pageable   Pageable pageable
@@ -45,7 +45,7 @@ public interface CustomerOrderDao extends Dao<CustomerOrder, Long> {
     Page<CustomerOrder> findAllByCustomerId(long customerId, Pageable pageable);
 
     /**
-     * The method finds count number of rows Customer Orders objects by Customer id.
+     * The method finds count number of rows Customer Orders objects by Customer i.
      *
      * @param customerId long customerId
      * @return count number of rows objects

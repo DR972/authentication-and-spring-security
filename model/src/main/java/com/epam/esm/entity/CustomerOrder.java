@@ -16,7 +16,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
@@ -96,7 +95,7 @@ public class CustomerOrder extends BaseEntity<Long> {
      * @param giftCertificates ArrayList<GiftCertificate> giftCertificates
      * @param amount           BigDecimal amount
      */
-    public CustomerOrder(long id, LocalDateTime purchaseTime, ArrayList<GiftCertificate> giftCertificates, BigDecimal amount) {
+    public CustomerOrder(long id, LocalDateTime purchaseTime, List<GiftCertificate> giftCertificates, BigDecimal amount) {
         super(id);
         this.purchaseTime = purchaseTime;
         this.giftCertificates = giftCertificates;

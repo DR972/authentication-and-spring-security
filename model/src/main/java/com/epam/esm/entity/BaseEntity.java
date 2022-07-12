@@ -1,8 +1,11 @@
 package com.epam.esm.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -17,6 +20,7 @@ import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * The class {@code BaseEntity} represents the base class for all entities.
@@ -25,17 +29,19 @@ import java.time.LocalDateTime;
  * @version 1.0
  */
 @MappedSuperclass
-@Data
+@Getter
+@Setter
+@ToString
 @RequiredArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseEntity<ID> extends RepresentationModel<BaseEntity<ID>> implements Serializable {
+public abstract class BaseEntity<I> extends RepresentationModel<BaseEntity<I>> implements Serializable {
     /**
      * BaseEntity id.
      */
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected ID id;
+    protected I id;
 
     /**
      * String operation.
@@ -54,9 +60,9 @@ public abstract class BaseEntity<ID> extends RepresentationModel<BaseEntity<ID>>
     /**
      * The constructor creates a BaseEntity object
      *
-     * @param id ID id
+     * @param id I id
      */
-    public BaseEntity(ID id) {
+    protected BaseEntity(I id) {
     }
 
     /**
@@ -91,5 +97,22 @@ public abstract class BaseEntity<ID> extends RepresentationModel<BaseEntity<ID>>
     private void audit(String operation) {
         setOperation(operation);
         setTimestamp(LocalDateTime.now());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        BaseEntity<?> that = (BaseEntity<?>) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (getId() != null ? getId().hashCode() : 0);
+        result = 31 * result + (getOperation() != null ? getOperation().hashCode() : 0);
+        result = 31 * result + (getTimestamp() != null ? getTimestamp().hashCode() : 0);
+        return result;
     }
 }

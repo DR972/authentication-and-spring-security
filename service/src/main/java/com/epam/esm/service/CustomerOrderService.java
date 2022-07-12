@@ -1,7 +1,6 @@
 package com.epam.esm.service;
 
 import com.epam.esm.dto.CustomerOrderDto;
-import com.epam.esm.entity.CustomerOrder;
 
 /**
  * The interface {@code CustomerOrderService} describes abstract behavior for working with
@@ -10,7 +9,7 @@ import com.epam.esm.entity.CustomerOrder;
  * @author Dzmitry Rozmysl
  * @version 1.0
  */
-public interface CustomerOrderService extends BaseService<CustomerOrder, Long, CustomerOrderDto> {
+public interface CustomerOrderService extends BaseService<Long, CustomerOrderDto> {
 
     /**
      * The method performs the operation of saving CustomerOrder.

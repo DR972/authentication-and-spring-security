@@ -13,7 +13,7 @@ import java.util.Optional;
  * @author Dzmitry Rozmysl
  * @version 1.0
  */
-public interface CustomerService extends BaseService<Customer, Long, CustomerDto> {
+public interface CustomerService extends BaseService<Long, CustomerDto> {
 
     /**
      * The method finds Customer by name.

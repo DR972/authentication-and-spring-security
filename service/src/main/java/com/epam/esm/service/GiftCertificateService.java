@@ -2,7 +2,6 @@ package com.epam.esm.service;
 
 import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.ResourceDto;
-import com.epam.esm.entity.GiftCertificate;
 import org.springframework.util.MultiValueMap;
 
 /**
@@ -12,7 +11,7 @@ import org.springframework.util.MultiValueMap;
  * @author Dzmitry Rozmysl
  * @version 1.0
  */
-public interface GiftCertificateService extends BaseService<GiftCertificate, Long, GiftCertificateDto> {
+public interface GiftCertificateService extends BaseService<Long, GiftCertificateDto> {
 
     /**
      * The method finds list GiftCertificates.

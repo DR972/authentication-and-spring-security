@@ -25,12 +25,12 @@ import java.util.stream.Collectors;
  */
 @Service
 @Scope("prototype")
-public class AbstractService<T extends BaseEntity<ID>, ID, D extends BaseEntityDto> implements BaseService<T, ID, D> {
+public class AbstractService<T extends BaseEntity<I>, I, D extends BaseEntityDto> implements BaseService<I, D> {
 
     /**
      * AbstractDao<T, ID> dao.
      */
-    protected final Dao<T, ID> dao;
+    protected final Dao<T, I> dao;
 
     /**
      * EntityMapper<T, D> entityMapper.
@@ -44,14 +44,14 @@ public class AbstractService<T extends BaseEntity<ID>, ID, D extends BaseEntityD
      * @param entityMapper EntityMapper<T, D> entityMapper
      */
     @Autowired
-    public AbstractService(Dao<T, ID> dao, EntityMapper<T, D> entityMapper) {
+    public AbstractService(Dao<T, I> dao, EntityMapper<T, D> entityMapper) {
         this.dao = dao;
         this.entityMapper = entityMapper;
     }
 
     @Override
-    public D findEntityById(ID id) {
-        return entityMapper.convertToDto(dao.findById(id).orElseThrow(() -> new NoSuchEntityException("ex.noSuchEntity", "id = " + id)));
+    public D findEntityById(I id) {
+        return entityMapper.convertToDto(dao.findById(id).orElseThrow(() -> new NoSuchEntityException("ex.noSuchEntity", "i = " + id)));
     }
 
     @Override

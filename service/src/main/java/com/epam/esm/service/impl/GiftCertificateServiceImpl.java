@@ -163,12 +163,17 @@ public class GiftCertificateServiceImpl extends AbstractService<GiftCertificate,
     }
 
     private List<Sort.Order> buildSort(List<String> orders) {
-        return orders != null ? (orders.stream().map(o -> o.startsWith("-") ? (new Sort.Order(Sort.Direction.DESC, o.substring(1))) : (new Sort.Order(Sort.Direction.ASC, o)))
-                .collect(Collectors.toList())) : new ArrayList<>();
+        if (orders != null) {
+            return orders.stream().map(o -> o.startsWith("-") ? (new Sort.Order(Sort.Direction.DESC, o.substring(1))) : (new Sort.Order(Sort.Direction.ASC, o))).collect(Collectors.toList());
+        }
+        return new ArrayList<>();
     }
 
     private List<String> searchByDescriptionOrName(List<String> queryParams) {
-        return queryParams != null ? ((queryParams.size() == 1) ? (Arrays.asList(queryParams.get(0), "")) : queryParams) : Arrays.asList("", "");
+        if (queryParams != null) {
+            return (queryParams.size() == 1) ? (Arrays.asList(queryParams.get(0), "")) : queryParams;
+        }
+        return Arrays.asList("", "");
     }
 
     private List<String> convertCamelToSnake(List<String> sortingParams) {

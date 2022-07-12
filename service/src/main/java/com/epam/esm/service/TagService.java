@@ -13,7 +13,7 @@ import java.util.Optional;
  * @author Dzmitry Rozmysl
  * @version 1.0
  */
-public interface TagService extends BaseService<Tag, Long, TagDto> {
+public interface TagService extends BaseService<Long, TagDto> {
 
     /**
      * The method finds Tag by name.
